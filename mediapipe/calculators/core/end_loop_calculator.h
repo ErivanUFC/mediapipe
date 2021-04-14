@@ -1,4 +1,5 @@
 // Copyright 2019 The MediaPipe Authors.
+// Modifications copyright (C) 2020 <Argo/jongwook>
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -22,8 +23,15 @@
 #include "mediapipe/framework/port/integral_types.h"
 #include "mediapipe/framework/port/ret_check.h"
 #include "mediapipe/framework/port/status.h"
+//Edit your Code to use Two hand information
+//============================================
+#include <iostream>
+using namespace std;
+extern int condition_code;
+//============================================
 
 namespace mediapipe {
+
 
 // Calculator for completing the processing of loops on iterable collections
 // inside a MediaPipe graph. The EndLoopCalculator collects all input packets
@@ -57,7 +65,7 @@ class EndLoopCalculator : public CalculatorBase {
   using ItemT = typename IterableT::value_type;
 
  public:
-  static absl::Status GetContract(CalculatorContract* cc) {
+  static ::mediapipe::Status GetContract(CalculatorContract* cc) {
     RET_CHECK(cc->Inputs().HasTag("BATCH_END"))
         << "Missing BATCH_END tagged input_stream.";
     cc->Inputs().Tag("BATCH_END").Set<Timestamp>();
@@ -67,10 +75,10 @@ class EndLoopCalculator : public CalculatorBase {
 
     RET_CHECK(cc->Outputs().HasTag("ITERABLE"));
     cc->Outputs().Tag("ITERABLE").Set<IterableT>();
-    return absl::OkStatus();
+    return ::mediapipe::OkStatus();
   }
 
-  absl::Status Process(CalculatorContext* cc) override {
+  ::mediapipe::Status Process(CalculatorContext* cc) override {
     if (!cc->Inputs().Tag("ITEM").IsEmpty()) {
       if (!input_stream_collection_) {
         input_stream_collection_.reset(new IterableT);
@@ -78,6 +86,16 @@ class EndLoopCalculator : public CalculatorBase {
       input_stream_collection_->push_back(
           cc->Inputs().Tag("ITEM").template Get<ItemT>());
     }
+    
+    
+    //Edit your Code to use Two hand information
+    //=================================================
+  if(strcmp(typeid(input_stream_collection_).name(),"NSt3__110unique_ptrINS_6vectorIN9mediapipe22NormalizedLandmarkListENS_9allocatorIS3_EEEENS_14default_deleteIS6_EEEE")==0){ 
+    	//cout<<input_stream_collection_->size()<<endl;
+        condition_code=input_stream_collection_->size();
+    }
+    //=================================================
+
 
     if (!cc->Inputs().Tag("BATCH_END").Value().IsEmpty()) {  // flush signal
       Timestamp loop_control_ts =
@@ -94,7 +112,7 @@ class EndLoopCalculator : public CalculatorBase {
             .SetNextTimestampBound(Timestamp(loop_control_ts.Value() + 1));
       }
     }
-    return absl::OkStatus();
+    return ::mediapipe::OkStatus();
   }
 
  private:
