@@ -264,7 +264,7 @@ REGISTER_CALCULATOR(LandmarksToRenderDataCalculator);
     	//ofstream out(str,std::ios_base::out | std::ios_base::app);
     }
 
-    printf("Follow this command: %s \n", str.c_str());
+    // printf("Follow this command: %s \n", str.c_str());
 
     if(size_argc==4&&condition_code==1&&con_idx2==1){
         ofstream slt(str,ios_base::out | ios_base::app);
