@@ -259,10 +259,12 @@ REGISTER_CALCULATOR(LandmarksToRenderDataCalculator);
     	}
     	//output file path 
     	str=output_path_cp+"Relative/"+dir_name+video_fname+".txt";
-        strabs=output_path_cp+"Absolute/"+dir_name+video_fname+".txt";
+      strabs=output_path_cp+"Absolute/"+dir_name+video_fname+".txt";
     	//output file open
     	//ofstream out(str,std::ios_base::out | std::ios_base::app);
     }
+
+    printf("Follow this command: %s \n", str.c_str());
 
     if(size_argc==4&&condition_code==1&&con_idx2==1){
         ofstream slt(str,ios_base::out | ios_base::app);
